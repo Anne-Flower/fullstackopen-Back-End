@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 let persons = [
   {
@@ -42,17 +43,24 @@ app.get("/api/persons/:id", (request, response) => {
   const person = persons.find((person) => person.id === id);
   if (person) {
     response.json(person);
-  }
-  else {
-    response.status(404).end()
+  } else {
+    response.status(404).end();
   }
 });
 
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  persons = persons.filter((person => person.id !== id));
-  return response.status(204).end()
-})
+  persons = persons.filter((person) => person.id !== id);
+  return response.status(204).end();
+});
+
+app.post("/api/persons", (request, response) => {
+  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  const newPersonAdded = request.body;
+  newPersonAdded.id = maxId + 1;
+  persons = persons.concat(newPersonAdded);
+  response.json(newPersonAdded);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
