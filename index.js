@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const morgan = require("morgan");
-app.use(morgan('tiny'));
+app.use(morgan("tiny"));
+const cors = require("cors");
+app.use(cors());
 
 let persons = [
   {
@@ -27,12 +29,12 @@ let persons = [
   },
 ];
 
-morgan.token('body', (req) => {
+morgan.token("body", (req) => {
   return JSON.stringify(req.body);
 });
 
 app.use(
-  morgan(':method :url :status :res[content-length] - :response-time ms :body')
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
 app.get("/api/persons", (request, response) => {
