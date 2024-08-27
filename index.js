@@ -37,6 +37,10 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
+app.get("/", (req, res) => {
+  res.redirect("/api/persons");
+});
+
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
@@ -96,7 +100,7 @@ app.post("/api/persons", (request, response) => {
   response.json(newPersonAdded);
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
