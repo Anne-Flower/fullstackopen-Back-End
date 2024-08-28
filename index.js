@@ -50,7 +50,7 @@ app.get("/api/persons/:id", (request, response, next) => {
 // Route pour supprimer une personne par ID
 app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id;
-  Person.findByIdAndRemove(id)
+  Person.findByIdAndDelete(id)
     .then(() => {
       response.status(204).end();
     })
