@@ -45,10 +45,6 @@ app.get("/api/persons/:id", (request, response, next) => {
       }
     })
     .catch((error) => next(error));
-  // .catch((error) => {
-  //   console.error(error);
-  //   response.status(400).send({ error: "malformatted id" });
-  // });
 });
 
 // Route pour supprimer une personne par ID
@@ -80,6 +76,22 @@ app.post("/api/persons", (request, response) => {
   person.save().then((savedPerson) => {
     response.json(savedPerson);
   });
+});
+// Route pour mettre à jour les informations d'une personne
+app.put("/api/persons/:id", (request, response, next) => {
+  const id = request.params.id;
+  const { name, number } = request.body;
+
+  const person = {
+    name,
+    number,
+  };
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 const errorHandler = (error, request, response, next) => {
