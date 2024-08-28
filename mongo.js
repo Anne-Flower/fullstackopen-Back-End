@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const url = process.env.MONGODB_URI;
 
 mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(url)
   .then(() => {
     console.log("Connected to MongoDB");
 
@@ -43,3 +43,5 @@ mongoose
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error.message);
   });
+
+  module.exports = mongoose.model('Person', personSchema)
