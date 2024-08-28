@@ -34,7 +34,7 @@ app.get("/info", (request, response) => {
 });
 
 // Route pour obtenir une personne par ID
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
   Person.findById(id)
     .then((person) => {
@@ -44,10 +44,11 @@ app.get("/api/persons/:id", (request, response) => {
         response.status(404).end();
       }
     })
-    .catch((error) => {
-      console.error(error);
-      response.status(400).send({ error: "malformatted id" });
-    });
+    .catch(error => next(error))
+    // .catch((error) => {
+    //   console.error(error);
+    //   response.status(400).send({ error: "malformatted id" });
+    // });
 });
 
 // Route pour supprimer une personne par ID
