@@ -60,23 +60,6 @@ app.delete("/api/persons/:id", (request, response) => {
     });
 });
 
-// Route pour ajouter une nouvelle personne
-app.post("/api/persons", (request, response) => {
-  const { name, number } = request.body;
-
-  if (!name || !number) {
-    return response.status(400).json({ error: "name or number missing" });
-  }
-
-  const person = new Person({
-    name,
-    number,
-  });
-
-  person.save().then((savedPerson) => {
-    response.json(savedPerson);
-  });
-});
 // Route pour mettre à jour les informations d'une personne
 app.put("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
@@ -92,6 +75,28 @@ app.put("/api/persons/:id", (request, response, next) => {
       response.json(updatedPerson);
     })
     .catch((error) => next(error));
+});
+// Route pour ajouter une nouvelle personne
+app.post("/api/persons", (request, response, next) => {
+  const { name, number } = request.body;
+
+  if (!name || !number) {
+    return response.status(400).json({ error: "name or number missing" });
+  }
+
+  const person = new Person({
+    name,
+    number,
+  });
+
+  person
+    .save()
+    .then((savedPerson) => {
+      response.json(savedPerson);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 const errorHandler = (error, request, response, next) => {
